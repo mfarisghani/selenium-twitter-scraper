@@ -288,7 +288,7 @@ It may be due to the following:
                 unusual_activity = self.driver.find_element(
                     "xpath", "//input[@data-testid='ocfEnterTextTextInput']"
                 )
-                unusual_activity.send_keys(self.username)
+                unusual_activity.send_keys(self.mail)
                 unusual_activity.send_keys(Keys.RETURN)
                 sleep(3)
                 break
@@ -598,19 +598,19 @@ It may be due to the following:
             print("Created Folder: {}".format(folder_path))
 
         data = {
-            "Name": [tweet[0] for tweet in self.data],
+            # "Name": [tweet[0] for tweet in self.data],
             "Handle": [tweet[1] for tweet in self.data],
             "Timestamp": [tweet[2] for tweet in self.data],
             "Verified": [tweet[3] for tweet in self.data],
-            "Content": [tweet[4] for tweet in self.data],
-            "Comments": [tweet[5] for tweet in self.data],
-            "Retweets": [tweet[6] for tweet in self.data],
-            "Likes": [tweet[7] for tweet in self.data],
+            "Content": [ self.clean_text(tweet[4]) for tweet in self.data],
+            # "Comments": [tweet[5] for tweet in self.data],
+            # "Retweets": [tweet[6] for tweet in self.data],
+            # "Likes": [tweet[7] for tweet in self.data],
             "Analytics": [tweet[8] for tweet in self.data],
             "Tags": [tweet[9] for tweet in self.data],
             "Mentions": [tweet[10] for tweet in self.data],
-            "Emojis": [tweet[11] for tweet in self.data],
-            "Profile Image": [tweet[12] for tweet in self.data],
+            # "Emojis": [tweet[11] for tweet in self.data],
+            # "Profile Image": [tweet[12] for tweet in self.data],
             "Tweet Link": [tweet[13] for tweet in self.data],
             "Tweet ID": [f"tweet_id:{tweet[14]}" for tweet in self.data],
         }
@@ -633,3 +633,9 @@ It may be due to the following:
 
     def get_tweets(self):
         return self.data
+    
+    def clean_text(self, text: str):
+        """Replace newlines and multiple spaces with single space"""
+        if not isinstance(text, str):
+            return text
+        return ' '.join(text.replace('\r', ' ').replace('\n', ' ').split())
